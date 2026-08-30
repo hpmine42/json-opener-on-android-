@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>JSON Opener</title>
+  <meta name="description" content="JSON-Dateien öffnen, durchsuchen und ansehen – auf Android direkt über „Teilen“.">
+  <meta name="theme-color" content="#0b1526">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon-64.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="JSON Opener">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header id="topbar">
+    <button id="btn-back" class="icon-btn" title="Zurück" aria-label="Zurück" hidden>‹</button>
+    <div class="brand">
+      <span class="brand-glyph">{ }</span>
+      <span class="brand-text">JSON Opener</span>
+    </div>
+    <div class="topbar-actions">
+      <button id="btn-install" class="btn ghost" hidden>App installieren</button>
+      <button id="btn-search" class="icon-btn" title="Suchen" aria-label="Suchen">⌕</button>
+      <button id="btn-menu" class="icon-btn" title="Menü" aria-label="Menü">⋯</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Startseite -->
+    <section id="page-home" class="page active">
+      <div class="dropzone" id="dropzone">
+        <div class="dz-icon">‹{ }›</div>
+        <h1>JSON-Datei öffnen</h1>
+        <p>Tippe zum Auswählen oder ziehe eine Datei hierher.</p>
+        <p class="dz-hint">Du bekommst eine JSON-Datei? Teile sie und wähle <strong>JSON Opener</strong>.</p>
+        <div class="dz-actions">
+          <button id="btn-pick" class="btn primary">Datei auswählen</button>
+          <button id="btn-sample" class="btn">Beispiel laden</button>
+        </div>
+        <input type="file" id="file-input" accept=".json,application/json,text/plain,application/octet-stream" hidden>
+      </div>
+      <div id="error-box" class="error-box" hidden>
+        <div class="error-title">⚠️ Fehler beim Öffnen</div>
+        <div id="error-msg" class="error-msg"></div>
+        <button id="btn-error-dismiss" class="btn ghost">Schließen</button>
+      </div>
+    </section>
+
+    <!-- Viewer -->
+    <section id="page-viewer" class="page">
+      <div class="viewer-head">
+        <div class="file-info">
+          <span id="file-name" class="file-name">datei.json</span>
+          <span id="file-meta" class="file-meta"></span>
+        </div>
+        <div class="viewer-actions">
+          <button id="btn-schema" class="chip" title="Schema anzeigen">Schema</button>
+        </div>
+      </div>
+      <div id="tree" class="tree" tabindex="0" aria-label="JSON-Inhalt"></div>
+      <pre id="raw" class="raw" hidden></pre>
+      <div id="search-box" class="search-box" hidden>
+        <input id="search-input" type="search" placeholder="Suchen … (⌘F / Strg+F)" autocomplete="off">
+        <span id="search-count" class="search-count"></span>
+        <button id="search-prev" class="icon-btn" title="Vorheriger Treffer" aria-label="Vorheriger Treffer">↑</button>
+        <button id="search-next" class="icon-btn" title="Nächster Treffer" aria-label="Nächster Treffer">↓</button>
+        <button id="search-close" class="icon-btn" title="Schließen" aria-label="Schließen">✕</button>
+      </div>
+      <div id="toast" class="toast" hidden></div>
+    </section>
+
+    <!-- Menü / Info -->
+    <section id="page-info" class="page">
+      <div class="info-card">
+        <h1>JSON Opener</h1>
+        <p class="info-sub">Öffnet JSON-Dateien direkt aus dem Android-Teilen-Menü – ohne die Datei in eine App zu importieren.</p>
+
+        <h2>Installieren</h2>
+        <ol class="steps">
+          <li>Öffne diese Seite im <strong>Chrome</strong> auf deinem Google Pixel.</li>
+          <li>Tippe auf <strong>⋮ → „App installieren“</strong> (oder „Zum Startbildschirm hinzufügen“).</li>
+          <li>Die App erscheint mit dem <strong>{ }</strong>-Icon auf dem Startbildschirm.</li>
+        </ol>
+
+        <h2>JSON-Datei öffnen</h2>
+        <ol class="steps">
+          <li>Tippe in der geteilten Datei auf <strong>„Teilen“</strong>.</li>
+          <li>Wähle im Teilen-Menü <strong>JSON Opener</strong>.</li>
+          <li>Die Datei wird sofort geöffnet und angezeigt.</li>
+        </ol>
+
+        <h2>In der App</h2>
+        <ul class="features">
+          <li>✓ <strong>Baumansicht</strong> – Objekte &amp; Arrays auf- und zuklappen</li>
+          <li>✓ <strong>Suche</strong> – Schlüssel &amp; Werte durchsuchen (⌘F / Strg+F)</li>
+          <li>✓ <strong>Rohdaten</strong> – formatiert oder kompakt ansehen</li>
+          <li>✓ <strong>Weiterteilen</strong> – Datei als .json an andere Apps schicken</li>
+          <li>✓ <strong>Speichern</strong> – als .json-Datei herunterladen</li>
+          <li>✓ <strong>Copy</strong> – Inhalt als Text kopieren</li>
+          <li>✓ <strong>Schema</strong> – Struktur-Übersicht mit Pfaden &amp; Typen</li>
+          <li>✓ <strong>Offline</strong> – funktioniert ohne Internetverbindung</li>
+        </ul>
+
+        <h2>Hinweise</h2>
+        <p class="note">Alle Daten bleiben auf deinem Gerät. Es werden keine Dateien hochgeladen.<br>
+        Große Dateien (mehrere MB) werden in der Baumansicht verzögert aufgebaut, damit alles flüssig bleibt.</p>
+
+        <button id="btn-info-home" class="btn primary">Zurück zur Startseite</button>
+      </div>
+    </section>
+  </main>
+
+  <nav id="bottom-bar" class="bottom-bar" hidden>
+    <button id="bb-raw" class="bb-btn" data-icon="{ }">Rohdaten</button>
+    <button id="bb-share" class="bb-btn" data-icon="📤">Teilen</button>
+    <button id="bb-save" class="bb-btn" data-icon="💾">Speichern</button>
+    <button id="bb-copy" class="bb-btn" data-icon="📋">Copy</button>
+    <button id="bb-open" class="bb-btn" data-icon="📂">Datei öffnen</button>
+  </nav>
+
+  <div id="loading" class="loading" hidden>
+    <div class="spinner"></div>
+    <div class="loading-text">Wird geladen …</div>
+  </div>
+
+  <div id="menu-sheet" class="sheet" hidden>
+    <div class="sheet-backdrop" data-close-sheet></div>
+    <div class="sheet-panel">
+      <button class="sheet-item" id="menu-open">📂 Datei öffnen</button>
+      <button class="sheet-item" id="menu-raw">📄 Rohdaten ansehen</button>
+      <button class="sheet-item" id="menu-share">📤 Teilen</button>
+      <button class="sheet-item" id="menu-save">💾 Speichern</button>
+      <button class="sheet-item" id="menu-copy">📋 Copy</button>
+      <button class="sheet-item" id="menu-info">ℹ️ Info &amp; Hilfe</button>
+      <button class="sheet-item" id="menu-install">📲 App installieren</button>
+    </div>
+  </div>
+
+  <div id="sheet-schema" class="sheet" hidden>
+    <div class="sheet-backdrop" data-close-sheet></div>
+    <div class="sheet-panel">
+      <div class="sheet-title">Schema</div>
+      <pre id="schema-output" class="schema-output"></pre>
+      <button class="btn primary" data-close-sheet>Schließen</button>
+    </div>
+  </div>
+
+  <script src="core.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
