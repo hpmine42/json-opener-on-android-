@@ -1,0 +1,36 @@
+{
+  "app": "JSON Opener",
+  "version": "1.0.0",
+  "autor": "Dein Name",
+  "sprache": "de",
+  "veroeffentlicht": "2026-08-30",
+  "features": [
+    "JSON-Dateien per Teilen-Menü öffnen",
+    "Baumansicht mit Auf- und Zuklappen",
+    "Volltextsuche in Schlüsseln und Werten",
+    "Rohdaten-Ansicht mit Syntax-Highlighting",
+    "Schema-Übersicht",
+    "Offline-fähig"
+  ],
+  "einstellungen": {
+    "thema": "dunkel",
+    "schriftgroesse": 13.5,
+    "automatischSpeichern": false,
+    "benachrichtigungen": null
+  },
+  "beispielDaten": {
+    "benutzer": [
+      { "id": 1, "name": "Anna", "aktiv": true, "punkte": 1280 },
+      { "id": 2, "name": "Ben", "aktiv": false, "punkte": 340 },
+      { "id": 3, "name": "Chiara", "aktiv": true, "punkte": 900 }
+    ],
+    "statistiken": {
+      "gesamt": 3,
+      "durchschnitt": 840,
+      "top": { "name": "Anna", "punkte": 1280 }
+    }
+  },
+  "hinweis": "Diese Datei ist nur ein Beispiel – du kannst sie nach Belieben ändern oder löschen.",
+  "leeresObjekt": {},
+  "leeresArray": []
+}
